@@ -24,20 +24,23 @@ public class Main {
 
         long res = binaryMaxSearch(max ,lan, n);
         System.out.println(res);
-        br.close();
     }
 
-    public static long binaryMaxSearch(long max, long[] lan, int n) {
-        long min = 1; long mid; int sum;
+    public static long binaryMaxSearch(long lmax, long[] lan, int n) {
+        long min = 0; long max = lmax + 1;
+        // 주의해야할 점!!! 배열의 최대값의 +1을 해주어야 한다.
+        // 이유는 1이 들어오는 경우와 최대값 자체가 답이 되는 경우를 커버하기 위해서이다.
+        long mid; int sum;
+
         // 배열 중 가장 큰 수를 기준으로 그 수를 쪼개가면서
         // 만들 수 있는 갯수(sum)를 체크하고 그 갯수를 기준으로 이분 분할 탐색을 진행한다.
-        while(min <= max) {
+        while(min < max) {
             sum = 0;
             mid = (max+min)/2;
-            for(int i = 0; i < lan.length; i++) sum += lan[i]/mid;
-            if(sum < n) max = mid - 1;
+            for(int i = 0; i < lan.length; i++) sum += (lan[i]/mid);
+            if(sum < n) max = mid;
             else min = mid + 1;
         }
-        return (max + min)/2;
+        return min - 1;
     }
 }
