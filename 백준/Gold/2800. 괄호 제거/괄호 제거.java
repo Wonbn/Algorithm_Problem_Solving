@@ -32,20 +32,25 @@ public class Main {
 
     // 다른 식을 만드는 메서드
     private static void generate(String expression, int startIndex, Set<String> result) {
+        // 괄호를 찾다가 startIndex가 문자열 끝까지 왔을때,
+        // 그때의 문자열을 result에 저장하고 return
         if (startIndex == expression.length()) {
             result.add(expression);
             return;
         }
 
+        // 열린 괄호를 만났다면
         if (expression.charAt(startIndex) == '(') {
             // 자신의 쌍인 닫힌 괄호를 찾아서 endIndex에 저장
             int endIndex = findMatchingClosingParenthesis(expression, startIndex);
 
             // 찾은 괄호 쌍 사이에 있는 괄호를 찾아서 제거하여 다시 식을 만든다.
             generate(expression, startIndex + 1, result);
+            // 결국 괄호 제거는 <1>(<2>)<3> 에서 1,2,3 파트만 떼서 붙여주면 된다.
             generate(expression.substring(0, startIndex) + expression.substring(startIndex + 1, endIndex) +
                     expression.substring(endIndex + 1), startIndex, result);
-        } else
+        }
+        else // 열린 괄호를 만나지 못했다면 인덱스를 한 칸씩 늘려서 찾는다.
             generate(expression, startIndex + 1, result);
     }
 
