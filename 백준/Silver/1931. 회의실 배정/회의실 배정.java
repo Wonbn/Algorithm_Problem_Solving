@@ -2,50 +2,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
-// 그리디 알고리즘
-// 활동 선택 문제 -> 하나의 활동에 대해서만 작업할 때, 최대한 많은 활동을 할 수 있게 선택하는 문제
 public class Main {
     public static void main(String[] args) throws IOException {
-        // 이 문제는 한 회의실에 최대한 많은 회의를 넣어야 한다.
-        // 알고리즘의 원리는 회의가 끝나는 시간이 최대한 짧은 시간을 선택해 나가는 것이다.
-        // 회의가 빨리 끝난다면 다음 회의를 선택할 때, 선택할 수 있는 회의가 많아지기 때문이다.
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         int n = Integer.parseInt(br.readLine());
+        int[][] arr = new int[n][2];
 
-        // 회의의 시작시간과 종료시간을 저장한다.
-        int time[][] = new int[n][2];
         for(int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            time[i][0] = Integer.parseInt(st.nextToken());
-            time[i][1] = Integer.parseInt(st.nextToken());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
         }
 
-        // 종료시간을 기준으로 오름차순으로 정렬한다.
-        Arrays.sort(time, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                // 종료시간이 같을 경우 시작시간이 빠른순으로 정렬해야한다.
-                if(o1[1] == o2[1]) {
-                    return o1[0] - o2[0];
-                }
-                return o1[1] - o2[1];
-            }
+        // 결국 많은 회의를 배정하려면 회의 중 가장 빨리 끝나는 회의를 넣어줘야 선택권이 많다.
+        // 하지만, 여기서 회의 시작 시간 또한 가장 빠른 것이 좋다.
+        // 따라서 회의가 끝나는 시간을 기준으로 정렬
+        Arrays.sort(arr, (o1, o2) -> {
+            if(o1[1] == o2[1])
+                return o1[0]-o1[1];
+            return o1[1]-o2[1];
         });
 
-        // 정렬된 시간 배열에서 현재 회의의 종료시간과 다음 회의의 시작시간을 비교한다.
-        int res = 0; int endtime = 0;
+        // 회의의 끝나는 시간을 기준으로 정렬했기 때문에 그 시간을 기준으로
+        // 크거나 같은 회의 시작시간을 고르고 그 중에 가장 빨리 회의가 끝나는 시간을 택한다.
+        int endTime = 0; int result = 0;
         for(int i = 0; i < n; i++) {
-            if(endtime <= time[i][0]) {
-                endtime = time[i][1];
-                res++;
+            if(endTime <= arr[i][0]) {
+                endTime = arr[i][1];
+                result++;
             }
         }
 
-        System.out.println(res);
+        System.out.println(result);
     }
 }
