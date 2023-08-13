@@ -26,6 +26,8 @@ public class Main {
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
+
+        //입력
         map = new int[n][m];
         visited = new boolean[n][m];
         for(int i = 0; i < n; i++) {
@@ -39,14 +41,16 @@ public class Main {
             }
         }
 
-        bfs(sn, sm);
+        bfs(sn, sm); // bfs를 이용한 모든 지점에 대해서 목표지점까지의 거리 구하기
 
+        // 방문하지 못했지만, 갈 수 있는 땅이었다면 도달할 수 없는 곳이기 때문에 -1
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < m; j++) {
                 if(!visited[i][j] && map[i][j] == 1) map[i][j] = -1;
             }
         }
 
+        // 출력
         for(int i = 0; i < n; i++) {
             if(i != 0) bw.write("\n");
             for(int j = 0; j < m; j++) {
@@ -59,6 +63,7 @@ public class Main {
         bw.close();
     }
 
+    // bfs를 이용해서 인접노드부터 탐색해가면서 거리를 1씩 늘려나간다.
     private static void bfs(int sn, int sm) {
         Queue<Node> q = new LinkedList<>();
         q.add(new Node(sn, sm, 0));
