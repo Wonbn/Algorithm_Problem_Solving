@@ -2,18 +2,16 @@ class Solution
 {
     public int solution(int n, int a, int b)
     {
-        int round = 1;
-        while(true) {
-            int nextA = (a+1)/2;
-            int nextB = (b+1)/2;
-            if(nextA == nextB) {
-                break;
-            }
-            a = nextA;
-            b = nextB;
-            round++;
+        int answer = 1;
+
+        int idxA = a-1;
+        int idxB = b-1;
+        while(idxA/2 != idxB/2) {
+            idxA = idxA/2;
+            idxB = idxB/2;
+            answer++;
         }
 
-        return round;
+        return answer;
     }
 }
