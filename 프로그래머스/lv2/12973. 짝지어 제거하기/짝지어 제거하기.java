@@ -4,18 +4,23 @@ class Solution
 {
     public int solution(String s)
     {
-        Stack<Character> stk = new Stack<>();
-        for(int i = 0; i < s.length(); i++) {
-            if(!stk.isEmpty() && stk.peek() == s.charAt(i)) {
-                stk.pop();
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()) {
+            if(stack.isEmpty()) {
+                stack.push(c);
+                continue;
+            }
+            if(c == stack.peek()) {
+                stack.pop();
             } else {
-                stk.push(s.charAt(i));
+                stack.push(c);
             }
         }
 
-        if(stk.isEmpty()) {
+        if(stack.isEmpty()) {
             return 1;
         }
+        
         return 0;
     }
 }
