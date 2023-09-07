@@ -1,22 +1,16 @@
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
+import java.util.stream.*;
 
 class Solution {
     public int solution(int[] citations) {
-        Integer[] tmp = Arrays.stream(citations).boxed().toArray(Integer[]::new);
-        Arrays.sort(tmp, Comparator.reverseOrder());
-        int[] thesis = new int[10001];
-        int sum = 0;
-        for(int c : tmp) {
-            sum++;
-            thesis[c] = sum;
+        Integer[] c = Arrays.stream(citations).boxed().toArray(Integer[]::new);
+        Arrays.sort(c, Collections.reverseOrder());
+        for(int i = 0; i < c.length; i++) {
+            if(i+1 > c[i]) {
+                return i;
+            }
         }
-
-        int max = 0;
-        for(int i = 0; i <= 10000; i++) {
-            max = Math.max(Math.min(thesis[i], i), max);
-        }
-
-        return max;
+        
+        return c.length;
     }
 }
