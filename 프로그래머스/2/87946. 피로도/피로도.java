@@ -24,6 +24,6 @@ class Solution {
             visited[i] = false;
         }
         
-        count = Math.max(count, depth);  
-    }  
+        count = Math.max(count, depth);
+    }
 }
