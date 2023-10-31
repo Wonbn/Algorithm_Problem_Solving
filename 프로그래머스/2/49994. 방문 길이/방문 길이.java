@@ -1,64 +1,36 @@
-import java.util.*; // 141
+import java.util.*;
 
-// 0 : U / 1 : D / 2 : R / 3 : L
 class Solution {
     public int solution(String dirs) {
         int answer = 0;
+        boolean[][][] m = new boolean[11][11][4];
+        
+        // 위아래오왼
         int[] dy = new int[] {-1, 1, 0, 0};
         int[] dx = new int[] {0, 0, 1, -1};
-        boolean[][][] visited = new boolean[11][11][4];        
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('U', 0); map.put('D', 1); map.put('R', 2); map.put('L', 3);
         
-        int[] idx = new int[] {5, 5};
+        int y = 5;
+        int x = 5;
         for(char cmd : dirs.toCharArray()) {
-            if(cmd == 'U') {
-                if(idx[0] + dy[0] < 0) continue;
-                int ny = idx[0] + dy[0];
-                int nx = idx[1] + dx[0];
-                if(!visited[ny][nx][1] && !visited[idx[0]][idx[1]][0]) {
-                    answer++;
-                    visited[idx[0]][idx[1]][0] = true;
-                    visited[ny][nx][1] = true;
-                }
-                idx[0] = ny;
-                idx[1] = nx;
-            }
-            if(cmd == 'D') {
-                if(idx[0] + dy[1] >= 11) continue;
-                int ny = idx[0] + dy[1];
-                int nx = idx[1] + dx[1];
-                if(!visited[ny][nx][0] && !visited[idx[0]][idx[1]][1]) {
-                    answer++;
-                    visited[idx[0]][idx[1]][1] = true;
-                    visited[ny][nx][0] = true;
-                }
-                idx[0] = ny;
-                idx[1] = nx;
-            }
-            if(cmd == 'R') {
-                if(idx[1] + dx[2] >= 11) continue;
-                int ny = idx[0] + dy[2];
-                int nx = idx[1] + dx[2];
-                if(!visited[ny][nx][3] && !visited[idx[0]][idx[1]][2]) {
-                    answer++;
-                    visited[idx[0]][idx[1]][2] = true;
-                    visited[ny][nx][3] = true;
-                }
-                idx[0] = ny;
-                idx[1] = nx;
-            }
-            if(cmd == 'L') {
-                if(idx[1] + dx[3] < 0) continue;
-                int ny = idx[0] + dy[3];
-                int nx = idx[1] + dx[3];
-                if(!visited[ny][nx][2] && !visited[idx[0]][idx[1]][3]) {
-                    answer++;
-                    visited[idx[0]][idx[1]][3] = true;
-                    visited[ny][nx][2] = true;
-                }
-                idx[0] = ny;
-                idx[1] = nx;
+            int ny = y + dy[map.get(cmd)];
+            int nx = x + dx[map.get(cmd)];
+            int rNum = ((map.get(cmd)%2)+1)%2+(map.get(cmd)/2)*2;
+            if(ny < 0 || ny > 10 || nx < 0 || nx > 10) continue;                              
+                 
+            boolean check = true;
+            if(!m[y][x][map.get(cmd)]) m[y][x][map.get(cmd)] = true;
+            else check = false;
+            y = ny;
+            x = nx;
+            
+            if(check && !m[ny][nx][rNum]) {
+                m[ny][nx][rNum] = true;
+                answer++;
             }
         }
+        
         
         return answer;
     }
